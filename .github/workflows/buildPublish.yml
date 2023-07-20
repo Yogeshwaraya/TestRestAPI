@@ -4,7 +4,7 @@ jobs:
   Build:
     runs-on: win-10-desktop
     env:
-      DOTNET_INSTALL_DIR: "./netInstall
+      DOTNET_INSTALL_DIR: "./netInstall"
     steps:
       - uses: actions/checkout@v3
 
