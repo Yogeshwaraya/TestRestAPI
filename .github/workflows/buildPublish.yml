@@ -1,44 +1,7 @@
-# This pipeline builds and publishes a NuGet package of a .NET Core class library project
-trigger:
-  - main # The branch to trigger the pipeline
-  
-  pool:
-    vmImage: 'windows-latest' # The VM image to run the pipeline on
-  
-  variables:
-    buildConfiguration: 'Release' # The configuration to build the project
-    major: '1' # The major version of the package
-    minor: '0' # The minor version of the package
-    patch: '0' # The patch version of the package
-  
-  steps:
-  - task: DotNetCoreCLI@2 # The task to run .NET Core commands
-    inputs:
-      command: 'restore' # The command to restore dependencies
-      projects: '**/*.csproj' # The pattern to search for project files
-  
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build' # The command to build the project
-      projects: '**/*.csproj'
-      arguments: '--configuration $(buildConfiguration)' # The arguments for the build command
-      zipAfterPublish: false # Do not zip the output files
-  
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'pack' # The command to pack the project
-      packagesToPack: '**/*.csproj' # The pattern to search for project files
-      packDestination: '$(Build.ArtifactStagingDirectory)' # The destination directory for the package
-      versioningScheme: 'byPrereleaseNumber' # The versioning scheme for the package
-      majorVersion: '$(major)' # The major version of the package
-      minorVersion: '$(minor)' # The minor version of the package
-      patchVersion: '$(patch)' # The patch version of the package
-  
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'push' # The command to push the package
-      packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg' # The pattern to search for package files
-      nuGetFeedType: 'external' # The feed type to push the package to
-      publishFeedCredentials: 'NuGet.org' # The service connection for nuget.org
-  
-  
+name: Build runner
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: win-10-desktop
+    steps:
+      - uses: actions/checkout@v3
