@@ -3,6 +3,8 @@ on: [push]
 jobs:
   Build:
     runs-on: win-10-desktop
+    env:
+      DOTNET_INSTALL_DIR: "./netInstall
     steps:
       - uses: actions/checkout@v3
 
@@ -13,6 +15,6 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
-        
+
       - name: Build all projects
         run: dotnet build --no-restore
